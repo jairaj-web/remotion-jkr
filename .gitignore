@@ -1,0 +1,13 @@
+node_modules/
+dist/
+
+# Large binary assets — not stored in git
+public/images/
+public/voice/
+
+# Rendered output videos
+../output/
+
+# OS
+.DS_Store
+Thumbs.db

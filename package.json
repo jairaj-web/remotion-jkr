@@ -1,0 +1,21 @@
+{
+  "name": "remotion-jkr",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "studio": "npx remotion studio src/index.tsx",
+    "render": "npx remotion render src/index.tsx JKRReel ../output/JKR_Reel_v5_Remotion.mp4 --codec=h264 --crf=18"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@remotion/cli": "^4.0.452",
+    "@remotion/google-fonts": "^4.0.452",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
+    "remotion": "^4.0.452"
+  }
+}
