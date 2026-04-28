@@ -19,16 +19,16 @@ const BLACK   = '#0A0A0A';
 const NAVY    = '#060D18';
 const DIMGOLD = 'rgba(201,168,76,0.18)';
 
-// Hook:45 + 6×60 shots + CTA:345 = 750f = 25s exactly
+// Hook:45 + 6×45 shots + CTA:435 = 750f = 25s  — voice synced line by line
 const SHOTS_V12 = [
   { isHook: true,  img: 'v12_aerial_lawn.webp',    frames: 45 },
-  { img: 'v12_aerial_lawn2.webp',   tag: '01 / 06', line1: 'Six Breathtaking', line2: 'Acres',          frames: 60, idx: 0 },
-  { img: 'v12_mandap1.webp',        tag: '02 / 06', line1: 'Every Ceremony',   line2: 'A Masterpiece',  frames: 60, idx: 1 },
-  { img: 'v12_room1.webp',          tag: '03 / 06', line1: 'Rooms Designed',   line2: 'For Royalty',    frames: 60, idx: 2 },
-  { img: 'v10_shot6_dining.webp',   tag: '04 / 06', isCounter: true,                                    frames: 60, idx: 3 },
-  { img: 'v12_aerial_pool.webp',    tag: '05 / 06', line1: 'Rooftop Pool',     line2: 'Touches The Sky',frames: 60, idx: 4 },
-  { img: 'v12_exterior1.webp',      tag: '06 / 06', line1: 'This Is',          line2: 'YOUR Story',     frames: 60, idx: 5 },
-  { isCTA: true,                                                                                          frames: 345 },
+  { img: 'v12_aerial_lawn2.webp',   tag: '01 / 06', line1: 'Six Breathtaking', line2: 'Acres',          frames: 45, idx: 0 },
+  { img: 'v12_mandap1.webp',        tag: '02 / 06', line1: 'Every Ceremony',   line2: 'A Masterpiece',  frames: 45, idx: 1 },
+  { img: 'v12_room1.webp',          tag: '03 / 06', line1: 'Rooms Crafted',    line2: 'For Royalty',    frames: 45, idx: 2 },
+  { img: 'v10_shot6_dining.webp',   tag: '04 / 06', isCounter: true,                                    frames: 45, idx: 3 },
+  { img: 'v12_aerial_pool.webp',    tag: '05 / 06', line1: 'Rooftop Pool',     line2: 'Touches The Sky',frames: 45, idx: 4 },
+  { img: 'v12_exterior1.webp',      tag: '06 / 06', line1: 'This Is',          line2: 'YOUR Story',     frames: 45, idx: 5 },
+  { isCTA: true,                                                                                          frames: 435 },
 ];
 
 export const TOTAL_FRAMES_V12 = SHOTS_V12.reduce((a, s) => a + s.frames, 0); // 795f
@@ -300,8 +300,8 @@ const ShotV12: React.FC<{
           <Counter />
         ) : (
           <>
-            <Typewriter text={line1!} delay={8} speed={2.2} size={80} />
-            <Typewriter text={line2!} delay={8 + (line1!.length * 2.2)} speed={2.2} size={80} color={GOLD} />
+            <Typewriter text={line1!} delay={6} speed={1.6} size={80} />
+            <Typewriter text={line2!} delay={6 + (line1!.length * 1.6)} speed={1.6} size={80} color={GOLD} />
           </>
         )}
       </div>
