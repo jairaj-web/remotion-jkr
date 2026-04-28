@@ -28,7 +28,7 @@ const SHOTS_V12 = [
   { img: 'v10_shot6_dining.webp',   tag: '04 / 06', isCounter: true,                                    frames: 45, idx: 3 },
   { img: 'v12_aerial_pool.webp',    tag: '05 / 06', line1: 'Rooftop Pool',     line2: 'Touches The Sky',frames: 45, idx: 4 },
   { img: 'v12_exterior1.webp',      tag: '06 / 06', line1: 'This Is',          line2: 'YOUR Story',     frames: 45, idx: 5 },
-  { isCTA: true,                                                                                          frames: 435 },
+  { isCTA: true,  img: 'v12_aerial_exterior.webp',                                                        frames: 435 },
 ];
 
 export const TOTAL_FRAMES_V12 = SHOTS_V12.reduce((a, s) => a + s.frames, 0); // 795f
@@ -311,8 +311,8 @@ const ShotV12: React.FC<{
   </Fade>
 );
 
-// ── CTA scene (animated gradient bg, no image) ────────────────────────────────
-const CTAScene: React.FC<{ frames: number }> = ({ frames }) => {
+// ── CTA scene ─────────────────────────────────────────────────────────────────
+const CTAScene: React.FC<{ frames: number; img?: string }> = ({ frames, img }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
@@ -353,10 +353,20 @@ const CTAScene: React.FC<{ frames: number }> = ({ frames }) => {
   return (
     <Fade total={frames}>
       <AbsoluteFill>
-        {/* Animated dark gradient bg */}
+        {/* Venue image bg — blurred and darkened */}
+        {img && (
+          <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
+            <Img
+              src={staticFile(`images/${img}`)}
+              style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'blur(6px) brightness(0.22) saturate(40%)' }}
+            />
+          </div>
+        )}
+
+        {/* Animated dark gradient overlay */}
         <div style={{
           position: 'absolute', inset: 0,
-          background: `radial-gradient(ellipse at 50% 40%, hsla(${hue},40%,14%,1) 0%, ${BLACK} 70%)`,
+          background: `radial-gradient(ellipse at 50% 40%, hsla(${hue},40%,12%,0.88) 0%, rgba(10,10,10,0.92) 70%)`,
         }} />
 
         {/* Subtle grid overlay */}
@@ -467,7 +477,7 @@ export const JKRReelV12: React.FC = () => {
           );
           if (shot.isCTA) return (
             <Series.Sequence key={i} durationInFrames={shot.frames}>
-              <CTAScene frames={shot.frames} />
+              <CTAScene frames={shot.frames} img={shot.img} />
             </Series.Sequence>
           );
           return (
