@@ -22,14 +22,14 @@ const ROSE   = '#FFE4E1';
 // V12 — Hook opening, fast cuts, blur-reveal, particles, counter, curtain CTA
 // Hook:45 + 6×45 shots + CTA:435 = 750f = 25s
 const SHOTS_V12 = [
-  { isHook: true,    img: null,                    frames: 45 },
-  { img: 'v10_shot4_aerial.webp',   tag: 'NORTH BANGALORE',   words: ['Most Breathtaking', 'Venue'],        frames: 45, idx: 0 },
-  { img: 'w10_svl495.webp',         tag: 'PREMIUM LUXURY',    words: ['Luxury', 'Redefined'],               frames: 45, idx: 1 },
-  { img: 'v10_shot3_ceremony.webp', tag: 'MAGICAL EVENINGS',  words: ['Unforgettable', 'Memories'],         frames: 45, idx: 2 },
-  { img: 'v10_shot6_dining.webp',   tag: '1000+ GUESTS',      isCounter: true,                              frames: 45, idx: 3 },
-  { img: 'v10_shot1_rooftop.webp',  tag: 'DIVINE BLESSINGS',  words: ['Your New', 'Beginning'],             frames: 45, idx: 4 },
-  { img: 'v10_shot5_entrance.webp', tag: 'YOUR FOREVER',      words: ['Starts', 'RIGHT HERE'],              frames: 45, idx: 5 },
-  { isCTA: true,     img: 'svl_SVL06860.webp',       frames: 435 },
+  { isHook: true,    img: null,                      frames: 45 },
+  { img: 'v12_aerial_lawn.webp',    tag: 'NORTH BANGALORE',   words: ['Most Breathtaking', 'Venue'],    frames: 45, idx: 0 },
+  { img: 'v12_mandap1.webp',        tag: 'GRAND CEREMONIES',  words: ['Where Moments', 'Become Magic'], frames: 45, idx: 1 },
+  { img: 'v12_room1.webp',          tag: 'LUXURY STAYS',      words: ['Comfort', 'Redefined'],          frames: 45, idx: 2 },
+  { img: 'v10_shot6_dining.webp',   tag: '1000+ GUESTS',      isCounter: true,                          frames: 45, idx: 3 },
+  { img: 'v12_aerial_pool.webp',    tag: 'DIVINE BLESSINGS',  words: ['Begin With', 'Blessings'],       frames: 45, idx: 4 },
+  { img: 'v12_exterior1.webp',      tag: 'YOUR FOREVER',      words: ['Starts', 'RIGHT HERE'],          frames: 45, idx: 5 },
+  { isCTA: true,     img: 'v12_aerial_exterior.webp', frames: 435 },
 ];
 
 export const TOTAL_FRAMES_V12 = SHOTS_V12.reduce((a, s) => a + s.frames, 0); // 750 = 25s
