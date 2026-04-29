@@ -16,16 +16,16 @@ const GOLD    = '#F0C040';
 const CHAMP   = '#F5E6C8';
 const WHITE   = '#FFFFFF';
 
-// V10 — fresh set of images, left-aligned style, slide-up reveal, night/golden aesthetic
+// V10 — 6 new JKR images, left-aligned style, slide-up reveal, night/golden aesthetic
 // 6 shots × 90f + CTA 210f = 750f = 25s
 const SHOTS_V10 = [
-  { img: 'svl_SVL06860.webp', tag: 'NORTH BANGALORE',  headline: "Most Breathtaking\nWedding Destination", frames: 90 },
-  { img: 'svl_SVL06580.webp', tag: 'PREMIUM VENUE',    headline: "Elegance at\nEvery Turn",               frames: 90 },
-  { img: 'w_cta_hero.webp',   tag: 'MAGICAL EVENINGS', headline: "Under the\nOpen Sky",                   frames: 90 },
-  { img: 'site_Dining-Hall-2.webp', tag: '1000+ GUESTS', headline: "One Grand\nFeast",                    frames: 90 },
-  { img: 'g04_gallery4.webp', tag: 'DIVINE BLESSINGS', headline: "Begin with\nGanesha's Grace",           frames: 90 },
-  { img: 'site_1-1-2.webp',   tag: 'YOUR FOREVER',     headline: "Starts Right\nHere",                   frames: 90 },
-  { img: 'v9_entrance.webp',  isCTA: true,                                                                  frames: 210 },
+  { img: 'v10_shot4_aerial.webp',   tag: 'NORTH BANGALORE',  headline: "Most Breathtaking\nWedding Destination", frames: 90 },
+  { img: 'v10_shot2_bedroom.webp',  tag: 'PREMIUM VENUE',    headline: "Elegance at\nEvery Turn",               frames: 90 },
+  { img: 'v10_shot3_ceremony.webp', tag: 'MAGICAL EVENINGS', headline: "Under the\nOpen Sky",                   frames: 90 },
+  { img: 'v10_shot6_dining.webp',   tag: '1000+ GUESTS',     headline: "One Grand\nFeast",                      frames: 90 },
+  { img: 'v10_shot1_rooftop.webp',  tag: 'DIVINE BLESSINGS', headline: "Begin with\nGanesha's Grace",           frames: 90 },
+  { img: 'v10_shot5_entrance.webp', tag: 'YOUR FOREVER',     headline: "Starts Right\nHere",                    frames: 90 },
+  { img: 'v10_shot5_entrance.webp', isCTA: true,                                                                 frames: 210 },
 ];
 
 export const TOTAL_FRAMES_V10 = SHOTS_V10.reduce((a, s) => a + s.frames, 0); // 750 = 25s
