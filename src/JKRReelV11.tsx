@@ -503,7 +503,7 @@ export const JKRReelV11: React.FC = () => {
         )}
       </Series>
 
-      <Audio src={staticFile('voice/voice_v10.mp3')} volume={1} />
+      <Audio src={staticFile('voice/voice_v11.mp3')} volume={1} />
       <Audio src={staticFile('voice/bg_music_v2.mp3')} volume={0.13} />
     </AbsoluteFill>
   );
