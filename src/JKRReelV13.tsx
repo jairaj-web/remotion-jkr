@@ -58,11 +58,11 @@ const FlashIn: React.FC = () => {
   return <div style={{ position: 'absolute', inset: 0, backgroundColor: 'white', opacity: op, pointerEvents: 'none', zIndex: 99 }} />;
 };
 
-// ── Bottom gradient (for text readability) ────────────────────────────────────
+// ── Center vignette (darkens edges, keeps center readable) ───────────────────
 const BottomGrad: React.FC = () => (
   <div style={{
-    position: 'absolute', bottom: 0, left: 0, right: 0, height: 560, pointerEvents: 'none',
-    background: `linear-gradient(transparent 0%, rgba(8,8,8,0.55) 35%, rgba(8,8,8,0.94) 100%)`,
+    position: 'absolute', inset: 0, pointerEvents: 'none',
+    background: `radial-gradient(ellipse 90% 75% at 50% 50%, transparent 30%, rgba(8,8,8,0.72) 100%)`,
   }} />
 );
 
@@ -85,7 +85,7 @@ const WordSlam: React.FC<{
   const { fps } = useVideoConfig();
   const words = text.split(' ');
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap' as const, gap: `0 ${size * 0.26}px` }}>
+    <div style={{ display: 'flex', flexWrap: 'wrap' as const, justifyContent: 'center', gap: `0 ${size * 0.26}px` }}>
       {words.map((word, i) => {
         const p = spring({ frame: Math.max(0, frame - delay - i * 5), fps, config: { damping: 10, stiffness: 400, mass: 0.5 } });
         const sc  = interpolate(p, [0, 1], [0, 1]);
@@ -112,11 +112,12 @@ const SlideTag: React.FC<{ text: string; delay?: number }> = ({ text, delay = 5 
   const y  = interpolate(frame - delay, [0, 16], [28, 0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.out(Easing.cubic) });
   const op = interpolate(frame - delay, [0, 12], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 14, opacity: op, transform: `translateY(${y}px)`, marginBottom: 18 }}>
-      <div style={{ width: 4, height: 30, background: GOLD, borderRadius: 2, boxShadow: `0 0 8px ${GOLD}` }} />
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14, opacity: op, transform: `translateY(${y}px)`, marginBottom: 18 }}>
+      <div style={{ width: 28, height: 2, background: GOLD, boxShadow: `0 0 8px ${GOLD}` }} />
       <div style={{ fontFamily: raleway.fontFamily, fontSize: 22, fontWeight: 600, color: GOLD, letterSpacing: '0.24em', textTransform: 'uppercase' as const }}>
         {text}
       </div>
+      <div style={{ width: 28, height: 2, background: GOLD, boxShadow: `0 0 8px ${GOLD}` }} />
     </div>
   );
 };
@@ -247,6 +248,18 @@ const HookV13: React.FC<{ img: string; frames: number }> = ({ img, frames }) => 
   );
 };
 
+// ── Inline gold rule (draws from center outward) ─────────────────────────────
+const InlineRule: React.FC<{ delay?: number }> = ({ delay = 8 }) => {
+  const frame = useCurrentFrame();
+  const prog = interpolate(frame - delay, [0, 22], [0, 50], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.out(Easing.cubic) });
+  return (
+    <div style={{ position: 'relative', height: 2, width: '100%', marginBottom: 4 }}>
+      <div style={{ position: 'absolute', left: '50%', top: 0, height: '100%', width: `${prog}%`, background: `linear-gradient(90deg, ${GOLD}, transparent)` }} />
+      <div style={{ position: 'absolute', right: '50%', top: 0, height: '100%', width: `${prog}%`, background: `linear-gradient(270deg, ${GOLD}, transparent)` }} />
+    </div>
+  );
+};
+
 // ── Regular shot ──────────────────────────────────────────────────────────────
 const ShotV13: React.FC<{
   img: string; frames: number; idx: number;
@@ -273,18 +286,24 @@ const ShotV13: React.FC<{
       <BottomGrad />
       <ParticlesV13 />
       <LogoV13 delay={6} />
-      <GoldAccentLine bottom={298} delay={6} />
 
-      {/* Bottom-third text block */}
-      <div style={{ position: 'absolute', bottom: 66, left: 52, right: 52 }}>
+      {/* Center text block */}
+      <div style={{
+        position: 'absolute', top: '50%', left: '50%',
+        transform: 'translate(-50%, -50%)',
+        display: 'flex', flexDirection: 'column', alignItems: 'center',
+        width: 960, textAlign: 'center' as const,
+      }}>
         {isCounter ? (
           <CounterV13 />
         ) : (
           <>
             <SlideTag text={tagText} delay={6} />
-            <WordSlam text={line1!} delay={8} size={82} color={CREAM} />
-            <div style={{ height: 6 }} />
-            <WordSlam text={line2!} delay={8 + line1!.split(' ').length * 5} size={82} color={GOLD} />
+            <InlineRule delay={8} />
+            <div style={{ height: 18 }} />
+            <WordSlam text={line1!} delay={8} size={88} color={CREAM} spacing="0.04em" />
+            <div style={{ height: 10 }} />
+            <WordSlam text={line2!} delay={8 + line1!.split(' ').length * 5} size={88} color={GOLD} spacing="0.04em" />
           </>
         )}
       </div>
