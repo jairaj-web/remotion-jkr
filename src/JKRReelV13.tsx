@@ -523,10 +523,12 @@ export const JKRReelV13: React.FC = () => {
           );
         })}
       </Series>
-      {/* Shots voice: hook + 6 shots (0 – 10.5s) */}
-      <Audio src={staticFile('voice/voice_v13_shots.mp3')} volume={1} />
-      {/* CTA voice: starts at frame 315 = 10.5s */}
-      <Sequence from={315}>
+      {/* Shots: 6 lines, hard cut at frame 270 (9.0s) — no trailing silence overlap */}
+      <Sequence durationInFrames={270}>
+        <Audio src={staticFile('voice/voice_v13_shots.mp3')} volume={1} />
+      </Sequence>
+      {/* CTA: shot-6 voice + 3 CTA lines, starts at frame 270 (9.0s) */}
+      <Sequence from={270}>
         <Audio src={staticFile('voice/voice_v13_cta.mp3')} volume={1} />
       </Sequence>
       <Audio src={staticFile('voice/bg_music_v2.mp3')} volume={0.15} />
