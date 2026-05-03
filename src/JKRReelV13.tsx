@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import {
-  AbsoluteFill, Audio, Easing, Img, Series,
+  AbsoluteFill, Audio, Easing, Img, Sequence, Series,
   interpolate, spring, staticFile,
   useCurrentFrame, useVideoConfig,
   continueRender, delayRender,
@@ -523,7 +523,12 @@ export const JKRReelV13: React.FC = () => {
           );
         })}
       </Series>
-      <Audio src={staticFile('voice/voice_v13.mp3')} volume={1} />
+      {/* Shots voice: hook + 6 shots (0 – 10.5s) */}
+      <Audio src={staticFile('voice/voice_v13_shots.mp3')} volume={1} />
+      {/* CTA voice: starts at frame 315 = 10.5s */}
+      <Sequence from={315}>
+        <Audio src={staticFile('voice/voice_v13_cta.mp3')} volume={1} />
+      </Sequence>
       <Audio src={staticFile('voice/bg_music_v2.mp3')} volume={0.15} />
     </AbsoluteFill>
   );
