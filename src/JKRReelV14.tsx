@@ -80,34 +80,42 @@ const Vignette: React.FC = () => (
 );
 
 // ── Split text reveal ─────────────────────────────────────────────────────────
+// Uses clipPath so each half is ALWAYS clipped correctly — no doubling at mid-animation
 const SplitReveal: React.FC<{
   text: string; size: number; color?: string; delay?: number; weight?: number;
 }> = ({ text, size, color = CREAM, delay = 0, weight = 700 }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const p   = spring({ frame: Math.max(0, frame - delay), fps, config: { damping: 14, stiffness: 260, mass: 0.7 } });
-  const ty  = interpolate(p, [0, 1], [48, 0]);
-  const tyN = interpolate(p, [0, 1], [-48, 0]);
-  const op  = interpolate(p, [0, 0.2, 1], [0, 1, 1]);
+  const p    = spring({ frame: Math.max(0, frame - delay), fps, config: { damping: 14, stiffness: 260, mass: 0.7 } });
+  // Both halves start fully outside (size * 1.3 ensures complete invisibility)
+  const topY = interpolate(p, [0, 1], [-size * 1.3, 0]);
+  const botY = interpolate(p, [0, 1], [size * 1.3, 0]);
+  const op   = interpolate(p, [0, 0.1, 1], [0, 1, 1]);
 
   const textStyle: React.CSSProperties = {
     fontFamily: cinzel.fontFamily, fontSize: size, fontWeight: weight as any,
     color, letterSpacing: '0.06em', lineHeight: 1,
-    textShadow: `0 4px 40px rgba(0,0,0,0.9)`,
+    textShadow: '0 4px 40px rgba(0,0,0,0.9)',
     whiteSpace: 'nowrap' as const,
   };
 
-  // Outer wrapper: clip bottom half (overflow hidden) — shows top portion, slides from top
-  // Inner wrapper: clip top half — shows bottom portion, slides from bottom
   return (
-    <div style={{ position: 'relative', display: 'inline-block', opacity: op }}>
-      {/* Top half: clips bottom, slides down from above */}
-      <div style={{ overflow: 'hidden', height: size * 0.58 }}>
-        <div style={{ ...textStyle, transform: `translateY(${tyN}px)` }}>{text}</div>
+    <div style={{ position: 'relative', height: size, display: 'inline-block', opacity: op }}>
+      {/* Top half — clipPath always shows only top 50%, slides from above */}
+      <div style={{
+        position: 'absolute', top: 0, left: 0, right: 0,
+        clipPath: 'inset(0 0 50% 0)',
+        transform: `translateY(${topY}px)`,
+      }}>
+        <div style={textStyle}>{text}</div>
       </div>
-      {/* Bottom half: clips top, slides up from below */}
-      <div style={{ overflow: 'hidden', height: size * 0.58, marginTop: -2 }}>
-        <div style={{ ...textStyle, transform: `translateY(${size * 0.5 + ty}px)`, position: 'relative', top: -size * 0.5 }}>{text}</div>
+      {/* Bottom half — clipPath always shows only bottom 50%, slides from below */}
+      <div style={{
+        position: 'absolute', top: 0, left: 0, right: 0,
+        clipPath: 'inset(50% 0 0 0)',
+        transform: `translateY(${botY}px)`,
+      }}>
+        <div style={textStyle}>{text}</div>
       </div>
     </div>
   );
@@ -387,17 +395,17 @@ const CTAV14: React.FC<{ img: string; frames: number }> = ({ img, frames }) => {
 
   const imgSat = interpolate(frame, [0, 40], [10, 60], { extrapolateRight: 'clamp', easing: Easing.out(Easing.cubic) });
 
-  // "YOUR LOVE STORY" split reveal
+  // "YOUR LOVE STORY" split reveal — offset > half-height of 56px font (28px), use 80
   const p1   = spring({ frame: Math.max(0, frame - 18), fps, config: { damping: 14, stiffness: 240, mass: 0.75 } });
-  const ty1  = interpolate(p1, [0, 1], [50, 0]);
-  const tyN1 = interpolate(p1, [0, 1], [-50, 0]);
-  const op1  = interpolate(p1, [0, 0.22, 1], [0, 1, 1]);
+  const ty1  = interpolate(p1, [0, 1], [80, 0]);
+  const tyN1 = interpolate(p1, [0, 1], [-80, 0]);
+  const op1  = interpolate(p1, [0, 0.15, 1], [0, 1, 1]);
 
-  // "BEGINS HERE" split reveal (delayed)
+  // "BEGINS HERE" split reveal — offset > half-height of 108px font (54px), use 120
   const p2   = spring({ frame: Math.max(0, frame - 32), fps, config: { damping: 14, stiffness: 240, mass: 0.75 } });
-  const ty2  = interpolate(p2, [0, 1], [50, 0]);
-  const tyN2 = interpolate(p2, [0, 1], [-50, 0]);
-  const op2  = interpolate(p2, [0, 0.22, 1], [0, 1, 1]);
+  const ty2  = interpolate(p2, [0, 1], [120, 0]);
+  const tyN2 = interpolate(p2, [0, 1], [-120, 0]);
+  const op2  = interpolate(p2, [0, 0.15, 1], [0, 1, 1]);
 
   // Champagne divider line
   const divW = interpolate(frame, [60, 88], [0, 880], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.out(Easing.cubic) });
@@ -468,24 +476,24 @@ const CTAV14: React.FC<{ img: string; frames: number }> = ({ img, frames }) => {
       <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -46%)', display: 'flex', flexDirection: 'column', alignItems: 'center', width: 980 }}>
 
         {/* YOUR LOVE STORY split reveal */}
-        <div style={{ opacity: op1 }}>
-          <div style={{ overflow: 'hidden', height: 70 }}>
-            <div style={{ ...splitStyle(56, `${CHAMP}CC`), transform: `translateY(${tyN1}px)` }}>YOUR LOVE STORY</div>
+        <div style={{ position: 'relative', height: 56, opacity: op1 }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, clipPath: 'inset(0 0 50% 0)', transform: `translateY(${tyN1}px)` }}>
+            <div style={splitStyle(56, `${CHAMP}CC`)}>YOUR LOVE STORY</div>
           </div>
-          <div style={{ overflow: 'hidden', height: 66, marginTop: -4 }}>
-            <div style={{ ...splitStyle(56, `${CHAMP}CC`), transform: `translateY(${28 + ty1}px)`, position: 'relative', top: -28 }}>YOUR LOVE STORY</div>
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, clipPath: 'inset(50% 0 0 0)', transform: `translateY(${ty1}px)` }}>
+            <div style={splitStyle(56, `${CHAMP}CC`)}>YOUR LOVE STORY</div>
           </div>
         </div>
 
-        <div style={{ height: 6 }} />
+        <div style={{ height: 12 }} />
 
         {/* BEGINS HERE split reveal */}
-        <div style={{ opacity: op2 }}>
-          <div style={{ overflow: 'hidden', height: 120 }}>
-            <div style={{ ...splitStyle(108, CREAM), transform: `translateY(${tyN2}px)` }}>BEGINS HERE</div>
+        <div style={{ position: 'relative', height: 108, opacity: op2 }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, clipPath: 'inset(0 0 50% 0)', transform: `translateY(${tyN2}px)` }}>
+            <div style={splitStyle(108, CREAM)}>BEGINS HERE</div>
           </div>
-          <div style={{ overflow: 'hidden', height: 108, marginTop: -4 }}>
-            <div style={{ ...splitStyle(108, CREAM), transform: `translateY(${54 + ty2}px)`, position: 'relative', top: -54 }}>BEGINS HERE</div>
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, clipPath: 'inset(50% 0 0 0)', transform: `translateY(${ty2}px)` }}>
+            <div style={splitStyle(108, CREAM)}>BEGINS HERE</div>
           </div>
         </div>
 
