@@ -59,16 +59,15 @@ const FlashIn: React.FC = () => {
   return <div style={{ position: 'absolute', inset: 0, backgroundColor: IVORY, opacity: op, pointerEvents: 'none', zIndex: 90 }} />;
 };
 
-// ── Bottom gradient (darkens lower portion for text readability) ──────────────
-const BottomPanel: React.FC = () => (
+// ── Top gradient (darkens upper portion for text readability) ────────────────
+const TopPanel: React.FC = () => (
   <div style={{
     position: 'absolute', inset: 0, pointerEvents: 'none',
     background: `linear-gradient(180deg,
-      transparent 0%,
-      transparent 42%,
-      rgba(10,10,20,0.55) 58%,
-      rgba(10,10,20,0.88) 75%,
-      rgba(10,10,20,0.97) 100%)`,
+      rgba(10,10,20,0.94) 0%,
+      rgba(10,10,20,0.80) 28%,
+      rgba(10,10,20,0.35) 50%,
+      transparent 65%)`,
   }} />
 );
 
@@ -307,7 +306,7 @@ const ShotV15: React.FC<{
       {/* Full bleed image */}
       <KenBurnsZoom src={img} totalFrames={frames} />
       <FlashIn />
-      <BottomPanel />
+      <TopPanel />
       <Motes />
 
       {/* Logo top center */}
@@ -316,18 +315,18 @@ const ShotV15: React.FC<{
       {/* Shot number pill top right */}
       {tag && <ShotPill tag={tag} delay={8} />}
 
-      {/* Text content — bottom panel */}
+      {/* Text content — top center, below logo */}
       {isCounter ? (
         <CounterV15 />
       ) : (
-        <div style={{ position: 'absolute', bottom: 62, left: 0, right: 0, paddingLeft: 56, paddingRight: 56, display: 'flex', flexDirection: 'column' as const, alignItems: 'center', gap: 4 }}>
-          <SlideUp text={`— ${tag} / 06 —`} size={13} color={`${COPPER}99`} delay={3} weight={300} spacing="0.28em" />
-          <div style={{ height: 8 }} />
-          <CharReveal text={line1!} size={74} color={IVORY} delay={6} stagger={1.8} />
-          <div style={{ height: 4 }} />
-          <CharReveal text={line2!} size={74} color={COPPER} delay={6 + line1!.length * 1.8} stagger={1.8} />
-          <div style={{ height: 12 }} />
-          <CopperRule delay={10} width={80} />
+        <div style={{ position: 'absolute', top: 230, left: 0, right: 0, paddingLeft: 52, paddingRight: 52, display: 'flex', flexDirection: 'column' as const, alignItems: 'center', gap: 4 }}>
+          <SlideUp text={`— ${tag} / 06 —`} size={13} color={`${COPPER}BB`} delay={3} weight={300} spacing="0.28em" />
+          <div style={{ height: 10 }} />
+          <CharReveal text={line1!} size={76} color={IVORY} delay={6} stagger={1.8} />
+          <div style={{ height: 6 }} />
+          <CharReveal text={line2!} size={76} color={COPPER} delay={6 + line1!.length * 1.8} stagger={1.8} />
+          <div style={{ height: 14 }} />
+          <CopperRule delay={10} width={90} />
         </div>
       )}
 
