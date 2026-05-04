@@ -11,23 +11,22 @@ import { loadFont as loadRaleway } from '@remotion/google-fonts/Raleway';
 const cinzel  = loadCinzel('normal', { weights: ['700'] });
 const raleway = loadRaleway('normal', { weights: ['300', '400', '600'] });
 
-// V15 — "FOREVER" — Deep navy + copper rose, bottom panel layout, scale zoom, char reveal
+// V15 — "FOREVER" — Deep navy + copper rose, top panel, duo+gallery shots
 const NAVY   = '#0A0A14';
 const COPPER = '#C4884E';
 const COPPER2= '#E8A86A';
 const IVORY  = '#F8F4EF';
-const IVDIM  = '#C8C0B4';
 
-// Hook:45 + 6×45 shots + CTA:285 = 600f = 20s
+// Hook:45 + 4 shots:180 + Counter:45 + Duo:45 + Gallery:45 + CTA:240 = 600f
 const SHOTS_V15 = [
-  { isHook: true,  img: 'v9_entrance.webp',          frames: 45 },
-  { img: 'v12_aerial_exterior.webp', tag:'01', line1: 'Six Breathtaking',  line2: 'Acres Of Paradise', frames: 45, idx: 0 },
-  { img: 'v12_mandap1.webp',         tag:'02', line1: 'Ceremonies',        line2: 'Beyond Compare',    frames: 45, idx: 1 },
-  { img: 'v12_room1.webp',           tag:'03', line1: 'Rooms That Whisper', line2: 'Pure Luxury',      frames: 45, idx: 2 },
-  { img: 'v9_dining.webp',           isCounter: true,                                                   frames: 45, idx: 3 },
-  { img: 'v12_pool1.webp',           tag:'05', line1: 'Sky Meets',         line2: 'Your Paradise',     frames: 45, idx: 4 },
-  { img: 'w02_svl609.webp',          tag:'06', line1: 'Your Perfect',      line2: 'Day Awaits',        frames: 45, idx: 5 },
-  { isCTA: true,   img: 'w_cta_events.webp',         frames: 285 },
+  { isHook: true,    img: 'v9_entrance.webp',          frames: 45 },
+  { img: 'v12_aerial_exterior.webp', tag:'01', line1: 'Six Breathtaking',   line2: 'Acres Of Paradise', frames: 45, idx: 0 },
+  { img: 'v12_mandap1.webp',         tag:'02', line1: 'Ceremonies',          line2: 'Beyond Compare',    frames: 45, idx: 1 },
+  { img: 'v12_room1.webp',           tag:'03', line1: 'Rooms That Whisper',  line2: 'Pure Luxury',       frames: 45, idx: 2 },
+  { img: 'v9_dining.webp',           isCounter: true,                                                     frames: 45, idx: 3 },
+  { isDuo: true,     imgL: 'svl_SVL06560.webp', imgR: 'w06_svl557.webp',    frames: 45 },
+  { isGallery: true, images: ['v12_mandap3.webp','v9_pool.webp','v12_lawn1.webp','site_Dining-Hall-4.webp'], frames: 45 },
+  { isCTA: true,     img: 'w_cta_events.webp',          frames: 285 },
 ];
 
 export const TOTAL_FRAMES_V15 = SHOTS_V15.reduce((a, s) => a + s.frames, 0);
@@ -59,7 +58,7 @@ const FlashIn: React.FC = () => {
   return <div style={{ position: 'absolute', inset: 0, backgroundColor: IVORY, opacity: op, pointerEvents: 'none', zIndex: 90 }} />;
 };
 
-// ── Top gradient (darkens upper portion for text readability) ────────────────
+// ── Top gradient (darkens upper portion for text readability) ─────────────────
 const TopPanel: React.FC = () => (
   <div style={{
     position: 'absolute', inset: 0, pointerEvents: 'none',
@@ -71,7 +70,24 @@ const TopPanel: React.FC = () => (
   }} />
 );
 
-// ── Character-by-character reveal ────────────────────────────────────────────
+// ── Progress bar fills left→right over shot duration ─────────────────────────
+const ProgressBar: React.FC<{ totalFrames: number; delay?: number }> = ({ totalFrames, delay = 8 }) => {
+  const frame = useCurrentFrame();
+  const progress = interpolate(Math.max(0, frame - delay), [0, totalFrames - delay - 4], [0, 100], { extrapolateRight: 'clamp' });
+  const op = interpolate(frame - delay, [0, 6], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+  return (
+    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, opacity: op, zIndex: 100 }}>
+      <div style={{
+        height: '100%',
+        width: `${progress}%`,
+        background: `linear-gradient(90deg, ${COPPER}88, ${COPPER2}, ${COPPER})`,
+        boxShadow: `0 0 8px ${COPPER}99`,
+      }} />
+    </div>
+  );
+};
+
+// ── Character-by-character reveal ─────────────────────────────────────────────
 const CharReveal: React.FC<{
   text: string; size: number; color?: string; weight?: number;
   spacing?: string; delay?: number; stagger?: number;
@@ -100,7 +116,7 @@ const CharReveal: React.FC<{
   );
 };
 
-// ── Slide-up line ─────────────────────────────────────────────────────────────
+// ── Slide-up line ──────────────────────────────────────────────────────────────
 const SlideUp: React.FC<{ text: string; size: number; color?: string; delay?: number; weight?: number; spacing?: string }> = ({ text, size, color = COPPER, delay = 0, weight = 300, spacing = '0.22em' }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
@@ -114,7 +130,7 @@ const SlideUp: React.FC<{ text: string; size: number; color?: string; delay?: nu
   );
 };
 
-// ── Copper rule draws from left ───────────────────────────────────────────────
+// ── Copper rule draws from left ────────────────────────────────────────────────
 const CopperRule: React.FC<{ delay?: number; width?: number }> = ({ delay = 4, width = 72 }) => {
   const frame = useCurrentFrame();
   const w = interpolate(frame - delay, [0, 18], [0, width], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.out(Easing.cubic) });
@@ -126,7 +142,7 @@ const CopperRule: React.FC<{ delay?: number; width?: number }> = ({ delay = 4, w
   );
 };
 
-// ── Shot number pill (top-right) ──────────────────────────────────────────────
+// ── Shot number pill (top-right) ───────────────────────────────────────────────
 const ShotPill: React.FC<{ tag: string; delay?: number }> = ({ tag, delay = 8 }) => {
   const frame = useCurrentFrame();
   const op = interpolate(frame - delay, [0, 12], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
@@ -141,12 +157,12 @@ const ShotPill: React.FC<{ tag: string; delay?: number }> = ({ tag, delay = 8 })
         backdropFilter: 'blur(12px)',
         fontFamily: raleway.fontFamily, fontSize: 14, fontWeight: 600,
         color: COPPER2, letterSpacing: '0.18em',
-      }}>{tag} / 06</div>
+      }}>{tag} / 05</div>
     </div>
   );
 };
 
-// ── Logo ──────────────────────────────────────────────────────────────────────
+// ── Logo ───────────────────────────────────────────────────────────────────────
 const LogoV15: React.FC<{ size?: number; delay?: number }> = ({ size = 145, delay = 6 }) => {
   const frame = useCurrentFrame();
   const op = interpolate(frame - delay, [0, 18], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
@@ -158,7 +174,7 @@ const LogoV15: React.FC<{ size?: number; delay?: number }> = ({ size = 145, dela
   );
 };
 
-// ── Floating copper motes ─────────────────────────────────────────────────────
+// ── Floating copper motes ──────────────────────────────────────────────────────
 const PMOTES = [
   { x:6,  spd:1.1, sz:3, dl:0  }, { x:24, spd:0.8, sz:4, dl:8  },
   { x:48, spd:1.2, sz:3, dl:3  }, { x:68, spd:0.9, sz:4, dl:13 },
@@ -179,7 +195,7 @@ const Motes: React.FC = () => {
   );
 };
 
-// ── Ticker ────────────────────────────────────────────────────────────────────
+// ── Ticker ─────────────────────────────────────────────────────────────────────
 const TickerV15: React.FC<{ delay?: number }> = ({ delay = 12 }) => {
   const frame = useCurrentFrame();
   const T = 'JKR FARMS & RESORTS  ·  NORTH BANGALORE  ·  6 ACRES  ·  1000+ GUESTS  ·  73385 01337  ·  jkrfarmsandresorts.com  ·  ';
@@ -192,7 +208,7 @@ const TickerV15: React.FC<{ delay?: number }> = ({ delay = 12 }) => {
   );
 };
 
-// ── Counter ───────────────────────────────────────────────────────────────────
+// ── Counter ────────────────────────────────────────────────────────────────────
 const CounterV15: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
@@ -213,31 +229,25 @@ const CounterV15: React.FC = () => {
   );
 };
 
-// ── Hook ─────────────────────────────────────────────────────────────────────
+// ── Hook ───────────────────────────────────────────────────────────────────────
 const HookV15: React.FC<{ img: string; frames: number }> = ({ img, frames }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  // BG image fades in
   const bgOp = interpolate(frame, [0, 20], [0, 1], { extrapolateRight: 'clamp' });
   const bgSc = interpolate(frame, [0, frames], [1.15, 1.04], { extrapolateRight: 'clamp', easing: Easing.out(Easing.quad) });
 
-  // Logo springs in from top
   const logoP  = spring({ frame: Math.max(0, frame - 4), fps, config: { damping: 14, stiffness: 220, mass: 0.8 } });
   const logoSc = interpolate(logoP, [0, 1], [0.4, 1]);
   const logoOp = interpolate(logoP, [0, 0.3, 1], [0, 1, 1]);
 
-  // "JKR" chars drop in
   const JKR = ['J','K','R'];
 
-  // Tagline
   const tagOp = interpolate(frame, [26, 40], [0, 1], { extrapolateRight: 'clamp' });
   const tagY  = interpolate(frame, [26, 40], [18, 0], { extrapolateRight: 'clamp', easing: Easing.out(Easing.cubic) });
 
-  // Subtitle
   const subOp = interpolate(frame, [32, 44], [0, 1], { extrapolateRight: 'clamp' });
 
-  // Rule width
   const ruleW = interpolate(frame, [18, 34], [0, 260], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.out(Easing.cubic) });
 
   const fadeOut = interpolate(frame, [frames - 7, frames], [1, 0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
@@ -251,12 +261,10 @@ const HookV15: React.FC<{ img: string; frames: number }> = ({ img, frames }) => 
       <Motes />
 
       <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 0 }}>
-        {/* Logo */}
         <div style={{ transform: `scale(${logoSc})`, opacity: logoOp, marginBottom: 16 }}>
           <Img src={staticFile('logo_sticky.webp')} style={{ width: 130, height: 'auto', mixBlendMode: 'screen', filter: `drop-shadow(0 0 20px ${COPPER}BB)` }} />
         </div>
 
-        {/* J K R */}
         <div style={{ display: 'flex', gap: 8 }}>
           {JKR.map((ch, i) => {
             const p  = spring({ frame: Math.max(0, frame - 8 - i * 6), fps, config: { damping: 9, stiffness: 400, mass: 0.5 } });
@@ -274,15 +282,12 @@ const HookV15: React.FC<{ img: string; frames: number }> = ({ img, frames }) => 
           })}
         </div>
 
-        {/* Copper rule */}
         <div style={{ width: ruleW, height: 1.5, background: `linear-gradient(90deg, transparent, ${COPPER}, ${COPPER2}, ${COPPER}, transparent)`, boxShadow: `0 0 16px ${COPPER}99`, marginTop: 4, marginBottom: 18 }} />
 
-        {/* FARMS & RESORTS */}
         <div style={{ opacity: tagOp, transform: `translateY(${tagY}px)`, fontFamily: raleway.fontFamily, fontSize: 30, fontWeight: 400, color: IVORY, letterSpacing: '0.38em', textTransform: 'uppercase' as const, textShadow: '0 2px 18px rgba(0,0,0,0.85)' }}>
           Farms &amp; Resorts
         </div>
 
-        {/* Location */}
         <div style={{ opacity: subOp, marginTop: 14, display: 'flex', alignItems: 'center', gap: 14 }}>
           <div style={{ width: 22, height: 1, background: `${COPPER}66` }} />
           <div style={{ fontFamily: raleway.fontFamily, fontSize: 16, fontWeight: 300, color: `${COPPER}AA`, letterSpacing: '0.30em' }}>NORTH BANGALORE</div>
@@ -293,7 +298,7 @@ const HookV15: React.FC<{ img: string; frames: number }> = ({ img, frames }) => 
   );
 };
 
-// ── Regular shot ─────────────────────────────────────────────────────────────
+// ── Regular shot ───────────────────────────────────────────────────────────────
 const ShotV15: React.FC<{
   img: string; frames: number; idx: number; tag?: string;
   line1?: string; line2?: string; isCounter?: boolean;
@@ -303,24 +308,19 @@ const ShotV15: React.FC<{
 
   return (
     <AbsoluteFill style={{ backgroundColor: NAVY, opacity: fadeOut }}>
-      {/* Full bleed image */}
       <KenBurnsZoom src={img} totalFrames={frames} />
       <FlashIn />
       <TopPanel />
       <Motes />
-
-      {/* Logo top center */}
       <LogoV15 delay={6} />
-
-      {/* Shot number pill top right */}
       {tag && <ShotPill tag={tag} delay={8} />}
+      <ProgressBar totalFrames={frames} delay={6} />
 
-      {/* Text content — top center, below logo */}
       {isCounter ? (
         <CounterV15 />
       ) : (
         <div style={{ position: 'absolute', top: 230, left: 0, right: 0, paddingLeft: 52, paddingRight: 52, display: 'flex', flexDirection: 'column' as const, alignItems: 'center', gap: 4 }}>
-          <SlideUp text={`— ${tag} / 06 —`} size={13} color={`${COPPER}BB`} delay={3} weight={300} spacing="0.28em" />
+          <SlideUp text={`— ${tag} / 05 —`} size={13} color={`${COPPER}BB`} delay={3} weight={300} spacing="0.28em" />
           <div style={{ height: 10 }} />
           <CharReveal text={line1!} size={76} color={IVORY} delay={6} stagger={1.8} />
           <div style={{ height: 6 }} />
@@ -335,52 +335,189 @@ const ShotV15: React.FC<{
   );
 };
 
-// ── CTA ───────────────────────────────────────────────────────────────────────
+// ── Duo Shot — two images side by side ────────────────────────────────────────
+const DuoShot: React.FC<{ imgL: string; imgR: string; frames: number }> = ({ imgL, imgR, frames }) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+
+  const pL = spring({ frame: Math.max(0, frame - 2), fps, config: { damping: 20, stiffness: 200, mass: 1.0 } });
+  const xL = interpolate(pL, [0, 1], [-560, 0]);
+
+  const pR = spring({ frame: Math.max(0, frame - 2), fps, config: { damping: 20, stiffness: 200, mass: 1.0 } });
+  const xR = interpolate(pR, [0, 1], [560, 0]);
+
+  const divOp = interpolate(frame, [10, 22], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+
+  const textP  = spring({ frame: Math.max(0, frame - 16), fps, config: { damping: 16, stiffness: 240, mass: 0.75 } });
+  const textTy = interpolate(textP, [0, 1], [30, 0]);
+  const textOp = interpolate(textP, [0, 0.2, 1], [0, 1, 1]);
+
+  const fadeOut = interpolate(frame, [frames - 7, frames], [1, 0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+
+  return (
+    <AbsoluteFill style={{ backgroundColor: NAVY, opacity: fadeOut }}>
+      {/* Left image panel */}
+      <div style={{ position: 'absolute', top: 0, bottom: 0, left: 0, width: '50%', overflow: 'hidden', transform: `translateX(${xL}px)` }}>
+        <Img src={staticFile(`images/${imgL}`)} style={{ width: '200%', height: '100%', objectFit: 'cover', filter: 'brightness(0.72) saturate(115%)' }} />
+      </div>
+      {/* Right image panel */}
+      <div style={{ position: 'absolute', top: 0, bottom: 0, left: '50%', right: 0, overflow: 'hidden', transform: `translateX(${xR}px)` }}>
+        <Img src={staticFile(`images/${imgR}`)} style={{ position: 'absolute', top: 0, right: 0, width: '200%', height: '100%', objectFit: 'cover', filter: 'brightness(0.72) saturate(115%)' }} />
+      </div>
+
+      {/* Center gold divider */}
+      <div style={{ position: 'absolute', top: 0, bottom: 0, left: '50%', width: 2, marginLeft: -1, background: `linear-gradient(180deg, transparent 5%, ${COPPER}CC 30%, ${COPPER2}EE 50%, ${COPPER}CC 70%, transparent 95%)`, opacity: divOp, boxShadow: `0 0 12px ${COPPER}88` }} />
+
+      {/* Gradient overlays for text area */}
+      <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(180deg, rgba(10,10,20,0.88) 0%, rgba(10,10,20,0.60) 35%, transparent 55%, transparent 70%, rgba(10,10,20,0.70) 100%)`, pointerEvents: 'none' }} />
+
+      <FlashIn />
+      <Motes />
+      <LogoV15 delay={6} />
+      <ProgressBar totalFrames={frames} delay={6} />
+
+      {/* Text block */}
+      <div style={{ position: 'absolute', top: 230, left: 0, right: 0, display: 'flex', flexDirection: 'column' as const, alignItems: 'center', transform: `translateY(${textTy}px)`, opacity: textOp }}>
+        <CopperRule delay={16} width={60} />
+        <div style={{ fontFamily: cinzel.fontFamily, fontSize: 68, fontWeight: 700, color: IVORY, letterSpacing: '0.06em', textAlign: 'center' as const, textShadow: '0 4px 32px rgba(0,0,0,0.95)', lineHeight: 1.2 }}>
+          The Perfect<br/>Setting
+        </div>
+        <div style={{ height: 10 }} />
+        <div style={{ fontFamily: raleway.fontFamily, fontSize: 20, color: `${COPPER}CC`, letterSpacing: '0.30em', textTransform: 'uppercase' as const, textShadow: '0 2px 12px rgba(0,0,0,0.9)' }}>For Every Occasion</div>
+        <div style={{ height: 12 }} />
+        <CopperRule delay={22} width={60} />
+      </div>
+
+      {/* Bottom label badges */}
+      <div style={{ position: 'absolute', bottom: 62, left: 0, right: 0, display: 'flex', justifyContent: 'space-around', paddingLeft: 40, paddingRight: 40, opacity: textOp }}>
+        {['Ceremony Halls', 'Luxury Suites'].map((label, i) => (
+          <div key={i} style={{
+            paddingLeft: 24, paddingRight: 24, paddingTop: 10, paddingBottom: 10,
+            border: `1px solid ${COPPER}55`, borderRadius: 30,
+            background: 'rgba(10,10,20,0.70)', backdropFilter: 'blur(10px)',
+            fontFamily: raleway.fontFamily, fontSize: 16, color: COPPER2, letterSpacing: '0.18em',
+          }}>{label}</div>
+        ))}
+      </div>
+
+      <TickerV15 />
+    </AbsoluteFill>
+  );
+};
+
+// ── Gallery Shot — 2×2 mosaic grid ────────────────────────────────────────────
+const GalleryShot: React.FC<{ images: string[]; frames: number }> = ({ images, frames }) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+
+  const fadeOut = interpolate(frame, [frames - 7, frames], [1, 0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+
+  const textP  = spring({ frame: Math.max(0, frame - 20), fps, config: { damping: 16, stiffness: 220, mass: 0.85 } });
+  const textSc = interpolate(textP, [0, 1], [0.88, 1]);
+  const textOp = interpolate(textP, [0, 0.3, 1], [0, 1, 1]);
+
+  return (
+    <AbsoluteFill style={{ backgroundColor: NAVY, opacity: fadeOut }}>
+      {/* 2×2 grid */}
+      <div style={{ position: 'absolute', inset: 0, display: 'grid', gridTemplateColumns: '1fr 1fr', gridTemplateRows: '1fr 1fr', gap: 5 }}>
+        {images.map((img, i) => {
+          const delay = 4 + i * 5;
+          const p = spring({ frame: Math.max(0, frame - delay), fps, config: { damping: 22, stiffness: 230, mass: 0.85 } });
+          const sc = interpolate(p, [0, 1], [1.18, 1.0]);
+          const op = interpolate(p, [0, 0.4, 1], [0, 1, 1]);
+          return (
+            <div key={i} style={{ overflow: 'hidden', opacity: op }}>
+              <Img
+                src={staticFile(`images/${img}`)}
+                style={{ width: '100%', height: '100%', objectFit: 'cover', transform: `scale(${sc})`, filter: 'brightness(0.62) saturate(120%)' }}
+              />
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Dark vignette overlay */}
+      <div style={{ position: 'absolute', inset: 0, background: 'rgba(10,10,20,0.44)', pointerEvents: 'none' }} />
+      {/* Center bright spot for text readability */}
+      <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 68% 42% at 50% 52%, rgba(10,10,20,0.82) 0%, transparent 100%)', pointerEvents: 'none' }} />
+
+      <Motes />
+      <LogoV15 delay={6} />
+      <ProgressBar totalFrames={frames} delay={6} />
+
+      {/* Center text block */}
+      <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, transform: `translateY(-50%) scale(${textSc})`, display: 'flex', flexDirection: 'column' as const, alignItems: 'center', gap: 10, opacity: textOp }}>
+        <CopperRule delay={20} width={80} />
+        <div style={{ fontFamily: raleway.fontFamily, fontSize: 22, color: `${COPPER}CC`, letterSpacing: '0.34em', textTransform: 'uppercase' as const, textShadow: '0 2px 20px rgba(0,0,0,0.95)' }}>The Venue Of</div>
+        <CharReveal text="YOUR DREAMS" size={84} color={IVORY} delay={22} stagger={1.8} />
+        <div style={{ height: 4 }} />
+        <CopperRule delay={26} width={80} />
+
+        {/* Four icon badges */}
+        <div style={{ display: 'flex', gap: 28, marginTop: 18 }}>
+          {['Mandap', 'Pool', 'Lawn', 'Dining'].map((label, i) => {
+            const bP  = spring({ frame: Math.max(0, frame - 28 - i * 4), fps, config: { damping: 16, stiffness: 280, mass: 0.6 } });
+            const bSc = interpolate(bP, [0, 1], [0, 1]);
+            const bOp = interpolate(bP, [0, 0.35, 1], [0, 1, 1]);
+            return (
+              <div key={i} style={{ transform: `scale(${bSc})`, opacity: bOp }}>
+                <div style={{
+                  paddingLeft: 20, paddingRight: 20, paddingTop: 9, paddingBottom: 9,
+                  border: `1px solid ${COPPER}66`, borderRadius: 4,
+                  background: 'rgba(10,10,20,0.72)', backdropFilter: 'blur(14px)',
+                  fontFamily: raleway.fontFamily, fontSize: 14, color: COPPER2, letterSpacing: '0.18em',
+                }}>{label}</div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      <TickerV15 />
+    </AbsoluteFill>
+  );
+};
+
+// ── CTA ────────────────────────────────────────────────────────────────────────
 const CTAV15: React.FC<{ img: string; frames: number }> = ({ img, frames }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  // BG image
   const imgSat = interpolate(frame, [0, 40], [8, 55], { extrapolateRight: 'clamp', easing: Easing.out(Easing.cubic) });
 
-  // "YOUR FOREVER" char reveal
   const p1  = spring({ frame: Math.max(0, frame - 16), fps, config: { damping: 15, stiffness: 230, mass: 0.75 } });
   const ty1 = interpolate(p1, [0, 1], [40, 0]);
   const op1 = interpolate(p1, [0, 0.2, 1], [0, 1, 1]);
 
-  // "BEGINS HERE" char reveal
   const p2  = spring({ frame: Math.max(0, frame - 28), fps, config: { damping: 15, stiffness: 230, mass: 0.75 } });
   const ty2 = interpolate(p2, [0, 1], [40, 0]);
   const op2 = interpolate(p2, [0, 0.2, 1], [0, 1, 1]);
 
-  // Divider
   const divW = interpolate(frame, [50, 78], [0, 820], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.out(Easing.cubic) });
 
-  // Phone typing
   const phone = '73385 01337';
   const shown = Math.floor(interpolate(frame, [85, 85 + phone.length * 5], [0, phone.length], { extrapolateRight: 'clamp' }));
   const cursor = shown < phone.length && Math.round(frame / 5) % 2 === 0;
   const phoneGlow = 0.5 + 0.5 * Math.sin(frame * 0.12);
 
-  // Website
-  const webOp = interpolate(frame, [160, 178], [0, 1], { extrapolateRight: 'clamp' });
+  const webOp = interpolate(frame, [130, 148], [0, 1], { extrapolateRight: 'clamp' });
 
-  // Button
-  const btnP  = spring({ frame: Math.max(0, frame - 188), fps, config: { damping: 14, stiffness: 200, mass: 0.95 } });
+  const btnP  = spring({ frame: Math.max(0, frame - 155), fps, config: { damping: 14, stiffness: 200, mass: 0.95 } });
   const btnSc = interpolate(btnP, [0, 1], [0.6, 1]);
   const btnOp = interpolate(btnP, [0, 0.4, 1], [0, 1, 1]);
   const pulse = 0.5 + 0.5 * Math.sin(frame * 0.09);
+
+  // Social proof badges
+  const badgeOp = interpolate(frame, [170, 188], [0, 1], { extrapolateRight: 'clamp' });
 
   const fadeOut = interpolate(frame, [frames - 8, frames], [1, 0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
 
   return (
     <AbsoluteFill style={{ opacity: fadeOut }}>
-      {/* BG */}
       <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
         <Img src={staticFile(`images/${img}`)} style={{ width: '100%', height: '110%', objectFit: 'cover', filter: `blur(3px) brightness(0.20) saturate(${imgSat}%)` }} />
       </div>
 
-      {/* Rich gradient overlay */}
       <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(160deg, rgba(10,10,20,0.82) 0%, rgba(10,10,20,0.58) 45%, rgba(10,10,20,0.90) 100%)` }} />
 
       <Motes />
@@ -393,7 +530,6 @@ const CTAV15: React.FC<{ img: string; frames: number }> = ({ img, frames }) => {
       {/* Main content */}
       <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -44%)', display: 'flex', flexDirection: 'column', alignItems: 'center', width: 960 }}>
 
-        {/* YOUR FOREVER */}
         <div style={{ overflow: 'hidden', width: '100%' }}>
           <div style={{ fontFamily: raleway.fontFamily, fontSize: 30, fontWeight: 300, color: `${COPPER}CC`, letterSpacing: '0.36em', textAlign: 'center' as const, textTransform: 'uppercase' as const, transform: `translateY(${ty1}px)`, opacity: op1 }}>
             Your Forever
@@ -401,7 +537,6 @@ const CTAV15: React.FC<{ img: string; frames: number }> = ({ img, frames }) => {
         </div>
         <div style={{ height: 6 }} />
 
-        {/* BEGINS HERE */}
         <div style={{ overflow: 'hidden', width: '100%' }}>
           <div style={{ fontFamily: cinzel.fontFamily, fontSize: 108, fontWeight: 700, color: IVORY, letterSpacing: '0.05em', lineHeight: 1, textAlign: 'center' as const, textShadow: `0 0 60px ${COPPER}33, 0 6px 40px rgba(0,0,0,0.9)`, transform: `translateY(${ty2}px)`, opacity: op2 }}>
             BEGINS HERE
@@ -410,7 +545,6 @@ const CTAV15: React.FC<{ img: string; frames: number }> = ({ img, frames }) => {
 
         <div style={{ height: 24 }} />
 
-        {/* Divider */}
         <div style={{ width: divW, height: 1.5, background: `linear-gradient(90deg, transparent, ${COPPER}, ${COPPER2}, ${COPPER}, transparent)`, boxShadow: `0 0 14px ${COPPER}88`, marginBottom: 28 }} />
 
         {/* Phone */}
@@ -423,7 +557,7 @@ const CTAV15: React.FC<{ img: string; frames: number }> = ({ img, frames }) => {
         <div style={{ fontFamily: raleway.fontFamily, fontSize: 22, color: `${IVORY}40`, letterSpacing: '0.10em', fontWeight: 300, opacity: webOp }}>
           jkrfarmsandresorts.com
         </div>
-        <div style={{ height: 32 }} />
+        <div style={{ height: 28 }} />
 
         {/* BOOK NOW button */}
         <div style={{ transform: `scale(${btnSc})`, opacity: btnOp }}>
@@ -439,6 +573,19 @@ const CTAV15: React.FC<{ img: string; frames: number }> = ({ img, frames }) => {
             BOOK NOW
           </div>
         </div>
+        <div style={{ height: 22 }} />
+
+        {/* Social proof row */}
+        <div style={{ display: 'flex', gap: 20, opacity: badgeOp }}>
+          {['6 Acres', '1000+ Guests', 'North Bangalore'].map((t, i) => (
+            <div key={i} style={{
+              paddingLeft: 18, paddingRight: 18, paddingTop: 8, paddingBottom: 8,
+              border: `1px solid ${COPPER}44`, borderRadius: 30,
+              background: 'rgba(10,10,20,0.60)', backdropFilter: 'blur(10px)',
+              fontFamily: raleway.fontFamily, fontSize: 15, color: `${IVORY}88`, letterSpacing: '0.14em', fontWeight: 300,
+            }}>{t}</div>
+          ))}
+        </div>
       </div>
 
       <TickerV15 />
@@ -446,7 +593,7 @@ const CTAV15: React.FC<{ img: string; frames: number }> = ({ img, frames }) => {
   );
 };
 
-// ── Root ──────────────────────────────────────────────────────────────────────
+// ── Root ───────────────────────────────────────────────────────────────────────
 export const JKRReelV15: React.FC = () => {
   const [handle] = React.useState(() => delayRender('fonts-v15'));
   useEffect(() => {
@@ -467,6 +614,16 @@ export const JKRReelV15: React.FC = () => {
               <CTAV15 img={shot.img!} frames={shot.frames} />
             </Series.Sequence>
           );
+          if (shot.isDuo) return (
+            <Series.Sequence key={i} durationInFrames={shot.frames}>
+              <DuoShot imgL={shot.imgL!} imgR={shot.imgR!} frames={shot.frames} />
+            </Series.Sequence>
+          );
+          if (shot.isGallery) return (
+            <Series.Sequence key={i} durationInFrames={shot.frames}>
+              <GalleryShot images={shot.images!} frames={shot.frames} />
+            </Series.Sequence>
+          );
           return (
             <Series.Sequence key={i} durationInFrames={shot.frames}>
               <ShotV15 img={shot.img!} frames={shot.frames} idx={shot.idx!} tag={shot.tag} line1={shot.line1} line2={shot.line2} isCounter={shot.isCounter} />
@@ -474,12 +631,12 @@ export const JKRReelV15: React.FC = () => {
           );
         })}
       </Series>
-      {/* Shots voice: 6 lines (~10.3s speech), cut at frame 315 (10.5s) */}
+      {/* Shots voice: covers 0–315f (10.5s) */}
       <Sequence durationInFrames={315}>
         <Audio src={staticFile('voice/voice_v15_shots.mp3')} volume={1} />
       </Sequence>
-      {/* CTA voice: starts at frame 315 (10.5s) */}
-      <Sequence from={315}>
+      {/* CTA voice: starts at frame 360 (after hook+5 shots+duo+gallery) */}
+      <Sequence from={360}>
         <Audio src={staticFile('voice/voice_v15_cta.mp3')} volume={1} />
       </Sequence>
       <Audio src={staticFile('voice/bg_music_v4.mp3')} volume={0.20} />
