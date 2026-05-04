@@ -537,12 +537,12 @@ export const JKRReelV14: React.FC = () => {
           );
         })}
       </Series>
-      {/* Shots: 6 lines, hard cut at frame 270 (9.0s) */}
-      <Sequence durationInFrames={270}>
+      {/* Shots: 6 lines (speech ~10.3s), cut at frame 315 (10.5s) — all lines play fully */}
+      <Sequence durationInFrames={315}>
         <Audio src={staticFile('voice/voice_v14_shots.mp3')} volume={1} />
       </Sequence>
-      {/* CTA: starts at frame 270 (9.0s) */}
-      <Sequence from={270}>
+      {/* CTA: starts at frame 315 (10.5s) when CTA scene begins */}
+      <Sequence from={315}>
         <Audio src={staticFile('voice/voice_v14_cta.mp3')} volume={1} />
       </Sequence>
       <Audio src={staticFile('voice/bg_music_v3.mp3')} volume={0.22} />
