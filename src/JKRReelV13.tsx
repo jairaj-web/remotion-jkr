@@ -19,14 +19,14 @@ const DARK   = '#080808';
 
 // Hook:45 + 6×45 shots + CTA:285 = 600f = 20s
 const SHOTS_V13 = [
-  { isHook: true, img: 'v12_aerial_mandap.webp',  frames: 45 },
-  { img: 'v12_lawn1.webp',        line1: "North Bangalore's", line2: 'Crown Jewel',   frames: 45, idx: 0 },
-  { img: 'v12_mandap2.webp',      line1: 'Every Ceremony',   line2: 'A Masterpiece', frames: 45, idx: 1 },
-  { img: 'v12_room2.webp',        line1: 'Rooms Built',      line2: 'For Royalty',   frames: 45, idx: 2 },
-  { img: 'v10_shot6_dining.webp', isCounter: true,                                    frames: 45, idx: 3 },
-  { img: 'v12_pool1.webp',        line1: 'Rooftop Pool',     line2: 'Paradise',      frames: 45, idx: 4 },
-  { img: 'svl_SVL06860.webp',     line1: 'Begin Your',       line2: 'Forever Here',  frames: 45, idx: 5 },
-  { isCTA: true, img: 'v12_aerial_lawn2.webp',    frames: 285 },
+  { isHook: true, img: 'v9_ceremony.webp',         frames: 45 },
+  { img: 'v9_aerial.webp',          line1: "North Bangalore's", line2: 'Crown Jewel',   frames: 45, idx: 0 },
+  { img: 'w05_svl746.webp',         line1: 'Every Ceremony',   line2: 'A Masterpiece', frames: 45, idx: 1 },
+  { img: 'w07_svl830.webp',         line1: 'Rooms Built',      line2: 'For Royalty',   frames: 45, idx: 2 },
+  { img: 'site_Dining-Hall-2.webp', isCounter: true,                                    frames: 45, idx: 3 },
+  { img: 'v10_shot1_rooftop.webp',  line1: 'Rooftop Pool',     line2: 'Paradise',      frames: 45, idx: 4 },
+  { img: 'svl_SVL06580.webp',       line1: 'Begin Your',       line2: 'Forever Here',  frames: 45, idx: 5 },
+  { isCTA: true, img: 'v10_shot5_entrance.webp',   frames: 285 },
 ];
 
 export const TOTAL_FRAMES_V13 = SHOTS_V13.reduce((a, s) => a + s.frames, 0); // 600f = 20s
