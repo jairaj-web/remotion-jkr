@@ -545,7 +545,7 @@ export const JKRReelV14: React.FC = () => {
       <Sequence from={270}>
         <Audio src={staticFile('voice/voice_v14_cta.mp3')} volume={1} />
       </Sequence>
-      <Audio src={staticFile('voice/bg_music_v2.mp3')} volume={0.15} />
+      <Audio src={staticFile('voice/bg_music_v3.mp3')} volume={0.22} />
     </AbsoluteFill>
   );
 };
