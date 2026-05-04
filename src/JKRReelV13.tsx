@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import {
-  AbsoluteFill, Audio, Easing, Img, Sequence, Series,
+  AbsoluteFill, Audio, Easing, Img, Series,
   interpolate, spring, staticFile,
   useCurrentFrame, useVideoConfig,
   continueRender, delayRender,
@@ -248,6 +248,54 @@ const HookV13: React.FC<{ img: string; frames: number }> = ({ img, frames }) => 
   );
 };
 
+// ── Glassmorphism center card ─────────────────────────────────────────────────
+const GlassCard: React.FC<{ children: React.ReactNode; delay?: number }> = ({ children, delay = 5 }) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const p  = spring({ frame: Math.max(0, frame - delay), fps, config: { damping: 16, stiffness: 220, mass: 0.85 } });
+  const sc = interpolate(p, [0, 1], [0.88, 1]);
+  const op = interpolate(p, [0, 0.25, 1], [0, 1, 1]);
+  const ty = interpolate(p, [0, 1], [40, 0]);
+  return (
+    <div style={{
+      position: 'absolute', top: '50%', left: '50%',
+      transform: `translate(-50%, calc(-50% + ${ty}px)) scale(${sc})`,
+      opacity: op,
+      display: 'flex', flexDirection: 'column', alignItems: 'center',
+      width: 940, textAlign: 'center' as const,
+      background: 'rgba(8, 8, 8, 0.52)',
+      backdropFilter: 'blur(22px)',
+      WebkitBackdropFilter: 'blur(22px)',
+      border: `1px solid rgba(212,168,67,0.28)`,
+      borderRadius: 28,
+      padding: '40px 56px 44px',
+      boxShadow: `0 8px 60px rgba(0,0,0,0.55), inset 0 1px 0 rgba(212,168,67,0.12)`,
+    }}>
+      {children}
+    </div>
+  );
+};
+
+// ── Shot progress dots ────────────────────────────────────────────────────────
+const ProgressDots: React.FC<{ current: number; delay?: number }> = ({ current, delay = 10 }) => {
+  const frame = useCurrentFrame();
+  const op = interpolate(frame - delay, [0, 14], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+  return (
+    <div style={{ position: 'absolute', bottom: 72, left: 0, right: 0, display: 'flex', justifyContent: 'center', gap: 10, opacity: op }}>
+      {[0, 1, 2, 3, 4, 5].map(i => {
+        const active = i === current;
+        return (
+          <div key={i} style={{
+            width: active ? 28 : 8, height: 8, borderRadius: 4,
+            background: active ? GOLD : `${GOLD}35`,
+            boxShadow: active ? `0 0 10px ${GOLD}` : 'none',
+          }} />
+        );
+      })}
+    </div>
+  );
+};
+
 // ── Inline gold rule (draws from center outward) ─────────────────────────────
 const InlineRule: React.FC<{ delay?: number }> = ({ delay = 8 }) => {
   const frame = useCurrentFrame();
@@ -287,13 +335,8 @@ const ShotV13: React.FC<{
       <ParticlesV13 />
       <LogoV13 delay={6} />
 
-      {/* Center text block */}
-      <div style={{
-        position: 'absolute', top: '50%', left: '50%',
-        transform: 'translate(-50%, -50%)',
-        display: 'flex', flexDirection: 'column', alignItems: 'center',
-        width: 960, textAlign: 'center' as const,
-      }}>
+      {/* Glassmorphism center card */}
+      <GlassCard delay={5}>
         {isCounter ? (
           <CounterV13 />
         ) : (
@@ -306,8 +349,9 @@ const ShotV13: React.FC<{
             <WordSlam text={line2!} delay={8 + line1!.split(' ').length * 5} size={88} color={GOLD} spacing="0.04em" />
           </>
         )}
-      </div>
+      </GlassCard>
 
+      <ProgressDots current={idx} delay={10} />
       <TickerV13 />
     </AbsoluteFill>
   );
@@ -479,10 +523,7 @@ export const JKRReelV13: React.FC = () => {
           );
         })}
       </Series>
-      {/* Voice starts at frame 45 — hook is music-only, shots 1-6 + CTA have voice */}
-      <Sequence from={45}>
-        <Audio src={staticFile('voice/voice_v13.mp3')} volume={1} />
-      </Sequence>
+      <Audio src={staticFile('voice/voice_v13.mp3')} volume={1} />
       <Audio src={staticFile('voice/bg_music_v2.mp3')} volume={0.15} />
     </AbsoluteFill>
   );
