@@ -224,17 +224,17 @@ const TickerV16: React.FC = () => {
   );
 };
 
-// ── Gradient overlay (bottom-heavy) ───────────────────────────────────────────
-const BottomPanel: React.FC = () => (
+// ── Gradient overlay (center-heavy for mid-screen text) ───────────────────────
+const CenterPanel: React.FC = () => (
   <div style={{
     position: 'absolute', inset: 0, pointerEvents: 'none',
     background: `linear-gradient(180deg,
-      rgba(7,8,16,0.70) 0%,
-      rgba(7,8,16,0.20) 22%,
-      transparent 40%,
-      transparent 50%,
-      rgba(7,8,16,0.55) 72%,
-      rgba(7,8,16,0.92) 100%)`,
+      rgba(7,8,16,0.72) 0%,
+      rgba(7,8,16,0.30) 18%,
+      rgba(7,8,16,0.60) 38%,
+      rgba(7,8,16,0.75) 55%,
+      rgba(7,8,16,0.40) 72%,
+      rgba(7,8,16,0.80) 100%)`,
   }} />
 );
 
@@ -331,7 +331,7 @@ const ShotV16: React.FC<{
     <AbsoluteFill style={{ backgroundColor: VOID, opacity: fadeOut }}>
       <PullUp src={img} totalFrames={frames} />
       <FlashV16 />
-      <BottomPanel />
+      <CenterPanel />
       <MotesV16 />
       <StoryDots active={sectionIdx} />
       <LogoV16 delay={5} />
@@ -350,13 +350,14 @@ const ShotV16: React.FC<{
         );
       })()}
 
-      {/* Text block — bottom third */}
-      <div style={{ position: 'absolute', bottom: 68, left: 0, right: 0, paddingLeft: 48, paddingRight: 48, display: 'flex', flexDirection: 'column' as const, alignItems: 'center', gap: 6 }}>
+      {/* Text block — vertically centered */}
+      <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, transform: 'translateY(-50%)', paddingLeft: 48, paddingRight: 48, display: 'flex', flexDirection: 'column' as const, alignItems: 'center', gap: 6 }}>
         <TealRule delay={4} width={50} />
-        <div style={{ height: 8 }} />
-        <WordPop text={line1!} size={82} color={WHITE} delay={6} stagger={5} font="cinzel" />
-        <WordPop text={line2!} size={82} color={GOLD} delay={6 + (line1!.split(' ').length * 5)} stagger={5} font="cinzel" />
-        <div style={{ height: 8 }} />
+        <div style={{ height: 10 }} />
+        <WordPop text={line1!} size={86} color={WHITE} delay={6} stagger={5} font="cinzel" />
+        <div style={{ height: 6 }} />
+        <WordPop text={line2!} size={86} color={GOLD} delay={6 + (line1!.split(' ').length * 5)} stagger={5} font="cinzel" />
+        <div style={{ height: 10 }} />
         <GoldRule delay={12} width={70} />
       </div>
 
