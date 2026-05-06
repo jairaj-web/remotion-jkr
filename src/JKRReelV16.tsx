@@ -35,7 +35,7 @@ const SHOTS_V16: Array<{
   { isCounter: true,  img: 'v12_aerial_lawn.webp',                                                          frames: 45, sectionIdx: 5 },
   { isDuo: true,      imgL: 'w05_svl746.webp', imgR: 'w07_svl830.webp',                                   frames: 45, sectionIdx: 6 },
   { isTriStrip: true, images: ['g02_gallery1.webp','g05_gallery5.webp','g08_gallery10.webp'],               frames: 45, sectionIdx: 7 },
-  { isCTA: true,      img: 'w_cta_photography.webp',                                                        frames: 240 },
+  { isCTA: true,      img: 'v12_aerial_exterior.webp',                                                     frames: 240 },
 ];
 
 export const TOTAL_FRAMES_V16 = SHOTS_V16.reduce((a, s) => a + s.frames, 0); // 600
@@ -615,9 +615,9 @@ const CTAV16: React.FC<{ img: string; frames: number }> = ({ img, frames }) => {
     <AbsoluteFill style={{ opacity: fadeOut }}>
       {/* BG */}
       <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
-        <Img src={staticFile(`images/${img}`)} style={{ width: '100%', height: '110%', objectFit: 'cover', filter: `blur(4px) brightness(0.18) saturate(${imgSat}%)` }} />
+        <Img src={staticFile(`images/${img}`)} style={{ width: '100%', height: '110%', objectFit: 'cover', filter: `blur(2px) brightness(0.45) saturate(${imgSat}%)` }} />
       </div>
-      <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(150deg, rgba(7,8,16,0.80) 0%, rgba(7,8,16,0.55) 50%, rgba(7,8,16,0.88) 100%)` }} />
+      <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(150deg, rgba(7,8,16,0.55) 0%, rgba(7,8,16,0.30) 50%, rgba(7,8,16,0.65) 100%)` }} />
 
       <MotesV16 />
 
