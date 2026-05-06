@@ -12,9 +12,18 @@ import { JKRReelV13, TOTAL_FRAMES_V13 } from './JKRReelV13';
 import { JKRReelV14, TOTAL_FRAMES_V14 } from './JKRReelV14';
 import { JKRReelV15, TOTAL_FRAMES_V15 } from './JKRReelV15';
 import { JKRReelV16, TOTAL_FRAMES_V16 } from './JKRReelV16';
+import { JKRReelV17, TOTAL_FRAMES_V17 } from './JKRReelV17';
 
 export const Root: React.FC = () => (
   <>
+    <Composition
+      id="JKRReelV17"
+      component={JKRReelV17}
+      durationInFrames={TOTAL_FRAMES_V17}
+      fps={30}
+      width={1080}
+      height={1920}
+    />
     <Composition
       id="JKRReelV16"
       component={JKRReelV16}
