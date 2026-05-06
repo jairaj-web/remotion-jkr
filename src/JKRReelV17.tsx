@@ -20,7 +20,7 @@ const CHAMP2 = '#F5D87A';
 const BLUSH  = '#E8C4C0';
 const WHITE  = '#FFFFFF';
 
-// Hook:60 + 4 shots:240 + Counter:60 + DiagDuo:60 + Mosaic:60 + CTA:240 = 720f = 24s
+// Hook:80 + 4 shots:320 + Counter:80 + DiagDuo:80 + Mosaic:80 + CTA:240 = 880f ≈ 29s
 const SHOTS_V17: Array<{
   isHook?: boolean; isCTA?: boolean; isCounter?: boolean;
   isDiagDuo?: boolean; isMosaic?: boolean;
@@ -28,18 +28,18 @@ const SHOTS_V17: Array<{
   tag?: string; line1?: string; line2?: string;
   frames: number; sectionIdx?: number;
 }> = [
-  { isHook: true,    img: 'w_cta_hero.webp',                                                              frames: 60, sectionIdx: 0 },
-  { img: 'v9_aerial.webp',       tag:'01', line1:'Where Royalty',   line2:'Celebrates',                   frames: 60, sectionIdx: 1 },
-  { img: 'svl_SVL06580.webp',    tag:'02', line1:'Timeless',         line2:'Elegance',                    frames: 60, sectionIdx: 2 },
-  { img: 'v9_bedroom.webp',      tag:'03', line1:'Luxury',           line2:'Redefined',                   frames: 60, sectionIdx: 3 },
-  { img: 'v10_shot6_dining.webp',tag:'04', line1:'Grandest',         line2:'Occasions',                   frames: 60, sectionIdx: 4 },
-  { isCounter: true, img: 'v10_shot4_aerial.webp',                                                         frames: 60, sectionIdx: 5 },
-  { isDiagDuo: true, imgL:'g10_events.webp',  imgR:'g11_photo.webp',                                      frames: 60, sectionIdx: 6 },
-  { isMosaic: true,  images:['g03_gallery3.webp','g06_gallery8.webp','g07_gallery9.webp'],                 frames: 60, sectionIdx: 7 },
+  { isHook: true,    img: 'w_cta_hero.webp',                                                              frames: 80, sectionIdx: 0 },
+  { img: 'v9_aerial.webp',       tag:'01', line1:'Where Royalty',   line2:'Celebrates',                   frames: 80, sectionIdx: 1 },
+  { img: 'svl_SVL06580.webp',    tag:'02', line1:'Timeless',         line2:'Elegance',                    frames: 80, sectionIdx: 2 },
+  { img: 'v9_bedroom.webp',      tag:'03', line1:'Luxury',           line2:'Redefined',                   frames: 80, sectionIdx: 3 },
+  { img: 'v10_shot6_dining.webp',tag:'04', line1:'Grandest',         line2:'Occasions',                   frames: 80, sectionIdx: 4 },
+  { isCounter: true, img: 'v10_shot4_aerial.webp',                                                         frames: 80, sectionIdx: 5 },
+  { isDiagDuo: true, imgL:'g10_events.webp',  imgR:'g11_photo.webp',                                      frames: 80, sectionIdx: 6 },
+  { isMosaic: true,  images:['g03_gallery3.webp','g06_gallery8.webp','g07_gallery9.webp'],                 frames: 80, sectionIdx: 7 },
   { isCTA: true,     img: 'v12_aerial_exterior.webp',                                                                frames: 240 },
 ];
 
-export const TOTAL_FRAMES_V17 = SHOTS_V17.reduce((a, s) => a + s.frames, 0); // 720
+export const TOTAL_FRAMES_V17 = SHOTS_V17.reduce((a, s) => a + s.frames, 0); // 880
 
 const TOTAL_DOTS = 8;
 
@@ -718,12 +718,12 @@ export const JKRReelV17: React.FC = () => {
         })}
       </Series>
 
-      {/* Shots voice: covers 0–480f (8×60f shots section) */}
-      <Sequence durationInFrames={480}>
+      {/* Shots voice: covers 0–640f (8×80f shots section) */}
+      <Sequence durationInFrames={640}>
         <Audio src={staticFile('voice/voice_v17_shots.mp3')} volume={1} />
       </Sequence>
-      {/* CTA voice: from frame 480 */}
-      <Sequence from={480}>
+      {/* CTA voice: from frame 640 */}
+      <Sequence from={640}>
         <Audio src={staticFile('voice/voice_v17_cta.mp3')} volume={1} />
       </Sequence>
       {/* Rise of a Legend — epic choir orchestral */}
