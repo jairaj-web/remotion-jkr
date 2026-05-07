@@ -19,7 +19,7 @@ const TEAL   = '#2DD4BF';
 const WHITE  = '#FFFFFF';
 const GOLD_D = '#A8892C';
 
-// Hook:45 + 4 shots:180 + Counter:45 + Duo:45 + TriStrip:45 + CTA:240 = 600f
+// Hook:60 + 4 shots:240 + Counter:60 + Duo:60 + TriStrip:60 + CTA:240 = 720f = 24s
 const SHOTS_V16: Array<{
   isHook?: boolean; isCTA?: boolean; isCounter?: boolean;
   isDuo?: boolean; isTriStrip?: boolean;
@@ -27,14 +27,14 @@ const SHOTS_V16: Array<{
   tag?: string; line1?: string; line2?: string;
   frames: number; sectionIdx?: number;
 }> = [
-  { isHook: true,     img: 'g14_venue1.webp',                                                               frames: 45, sectionIdx: 0 },
-  { img: 'v12_exterior2.webp',  tag:'01', line1: "North Bangalore's", line2: "Pride & Glory",              frames: 45, sectionIdx: 1 },
-  { img: 'v9_ceremony.webp',    tag:'02', line1: 'Sacred Ceremonies', line2: 'Beautifully Done',           frames: 45, sectionIdx: 2 },
-  { img: 'v10_shot1_rooftop.webp', tag:'03', line1: 'Rooftop Views', line2: 'Unmatched',                  frames: 45, sectionIdx: 3 },
-  { img: 'v12_mandap2.webp',    tag:'04', line1: 'Timeless Mandaps', line2: 'Crafted To Perfection',      frames: 45, sectionIdx: 4 },
-  { isCounter: true,  img: 'v12_aerial_lawn.webp',                                                          frames: 45, sectionIdx: 5 },
-  { isDuo: true,      imgL: 'v12_room2.webp', imgR: 'w03_svl595.webp',                                    frames: 45, sectionIdx: 6 },
-  { isTriStrip: true, images: ['g02_gallery1.webp','g05_gallery5.webp','g08_gallery10.webp'],               frames: 45, sectionIdx: 7 },
+  { isHook: true,     img: 'g14_venue1.webp',                                                               frames: 60, sectionIdx: 0 },
+  { img: 'v12_exterior2.webp',  tag:'01', line1: "North Bangalore's", line2: "Pride & Glory",              frames: 60, sectionIdx: 1 },
+  { img: 'v9_ceremony.webp',    tag:'02', line1: 'Sacred Ceremonies', line2: 'Beautifully Done',           frames: 60, sectionIdx: 2 },
+  { img: 'v10_shot1_rooftop.webp', tag:'03', line1: 'Rooftop Views', line2: 'Unmatched',                  frames: 60, sectionIdx: 3 },
+  { img: 'v12_mandap2.webp',    tag:'04', line1: 'Timeless Mandaps', line2: 'Crafted To Perfection',      frames: 60, sectionIdx: 4 },
+  { isCounter: true,  img: 'v12_aerial_lawn.webp',                                                          frames: 60, sectionIdx: 5 },
+  { isDuo: true,      imgL: 'v12_room2.webp', imgR: 'w03_svl595.webp',                                    frames: 60, sectionIdx: 6 },
+  { isTriStrip: true, images: ['g02_gallery1.webp','g05_gallery5.webp','g08_gallery10.webp'],               frames: 60, sectionIdx: 7 },
   { isCTA: true,      img: 'v12_aerial_exterior.webp',                                                     frames: 240 },
 ];
 
@@ -740,11 +740,11 @@ export const JKRReelV16: React.FC = () => {
       </Series>
 
       {/* Shots voice: hook+7 sections = 8×45 = 360f, voice ends naturally around 10.3s (309f) */}
-      <Sequence durationInFrames={315}>
+      <Sequence durationInFrames={420}>
         <Audio src={staticFile('voice/voice_v16_shots.mp3')} volume={1} />
       </Sequence>
-      {/* CTA voice: starts at frame 315 (plays over TriStrip tail + CTA) */}
-      <Sequence from={315}>
+      {/* CTA voice: starts at frame 480 (when CTA section begins: 8×60=480) */}
+      <Sequence from={480}>
         <Audio src={staticFile('voice/voice_v16_cta.mp3')} volume={1} />
       </Sequence>
       {/* Background music: Heroes Tournament — epic orchestral */}
