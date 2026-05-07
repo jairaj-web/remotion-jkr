@@ -33,7 +33,7 @@ const SHOTS_V16: Array<{
   { img: 'v10_shot1_rooftop.webp', tag:'03', line1: 'Rooftop Views', line2: 'Unmatched',                  frames: 45, sectionIdx: 3 },
   { img: 'v12_mandap2.webp',    tag:'04', line1: 'Timeless Mandaps', line2: 'Crafted To Perfection',      frames: 45, sectionIdx: 4 },
   { isCounter: true,  img: 'v12_aerial_lawn.webp',                                                          frames: 45, sectionIdx: 5 },
-  { isDuo: true,      imgL: 'w05_svl746.webp', imgR: 'w07_svl830.webp',                                   frames: 45, sectionIdx: 6 },
+  { isDuo: true,      imgL: 'v12_room2.webp', imgR: 'w03_svl595.webp',                                    frames: 45, sectionIdx: 6 },
   { isTriStrip: true, images: ['g02_gallery1.webp','g05_gallery5.webp','g08_gallery10.webp'],               frames: 45, sectionIdx: 7 },
   { isCTA: true,      img: 'v12_aerial_exterior.webp',                                                     frames: 240 },
 ];
