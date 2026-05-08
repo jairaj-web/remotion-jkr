@@ -132,6 +132,26 @@ const StoryDots: React.FC<{ total: number; current: number }> = ({ total, curren
   </div>
 );
 
+// ── JKR Logo watermark ───────────────────────────────────────────────────────
+const Logo: React.FC<{ size?: number; delay?: number; top?: number | string; position?: 'left' | 'center' | 'right' }> = ({
+  size = 110, delay = 6, top = 92, position = 'center',
+}) => {
+  const frame = useCurrentFrame();
+  const op = interpolate(Math.max(0, frame - delay), [0, 12], [0, 1], { extrapolateRight: 'clamp' });
+  const posStyle: React.CSSProperties =
+    position === 'center' ? { left: 0, right: 0, display: 'flex', justifyContent: 'center' } :
+    position === 'left'   ? { left: 30 } :
+                            { right: 30 };
+  return (
+    <div style={{ position: 'absolute', top, ...posStyle, zIndex: 25, opacity: op }}>
+      <Img
+        src={staticFile('logo.png')}
+        style={{ width: size, height: 'auto', objectFit: 'contain', filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.7))' }}
+      />
+    </div>
+  );
+};
+
 // ── Thin gold divider line ───────────────────────────────────────────────────
 const GoldLine: React.FC<{ delay?: number; width?: number }> = ({ delay = 10, width = 80 }) => {
   const frame = useCurrentFrame();
@@ -169,6 +189,7 @@ const HookV18: React.FC<{ shot: typeof SHOTS_V18[0] }> = ({ shot }) => {
       <CurtainReveal src={shot.img!} totalFrames={shot.frames} />
       <LetterBox barH={80} />
       <FloatingDiamonds />
+      <Logo size={120} delay={28} top={100} position="center" />
 
       {/* Rose gold vignette side strips */}
       <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(201,133,106,0.12) 0%, transparent 30%, transparent 70%, rgba(201,133,106,0.12) 100%)' }} />
@@ -219,6 +240,7 @@ const ShotV18: React.FC<{ shot: typeof SHOTS_V18[0]; sectionIdx: number }> = ({ 
       <ShotOverlay />
       <FloatingDiamonds />
       <StoryDots total={7} current={sectionIdx} />
+      <Logo size={90} delay={4} top={100} position="right" />
 
       {/* Tag pill */}
       <SlideUp delay={4} style={{ position: 'absolute', top: 110, left: 36 }}>
@@ -282,6 +304,7 @@ const CounterV18: React.FC<{ shot: typeof SHOTS_V18[0] }> = ({ shot }) => {
       <div style={{ position: 'absolute', inset: 0, background: 'rgba(10,31,14,0.82)' }} />
       <StoryDots total={7} current={5} />
       <FloatingDiamonds />
+      <Logo size={100} delay={4} top={100} position="center" />
 
       <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 0 }}>
         <SlideUp delay={4}>
@@ -330,6 +353,7 @@ const StripV18: React.FC<{ shot: typeof SHOTS_V18[0] }> = ({ shot }) => {
     <AbsoluteFill style={{ background: FOREST2 }}>
       <StoryDots total={7} current={6} />
       <FloatingDiamonds />
+      <Logo size={90} delay={4} top={100} position="center" />
 
       <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 0, padding: '100px 20px 80px' }}>
         <SlideUp delay={4}>
@@ -396,8 +420,9 @@ const CTAV18: React.FC<{ shot: typeof SHOTS_V18[0] }> = ({ shot }) => {
       <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 30%, rgba(10,31,14,0.90) 100%)' }} />
       <FloatingDiamonds />
 
-      {/* Top logo strip */}
-      <div style={{ position: 'absolute', top: 60, left: 0, right: 0, textAlign: 'center', opacity: fadeIn }}>
+      {/* Top logo */}
+      <Logo size={140} delay={8} top={55} position="center" />
+      <div style={{ position: 'absolute', top: 200, left: 0, right: 0, textAlign: 'center', opacity: fadeIn }}>
         <div style={{ fontFamily: montserrat.fontFamily, fontSize: 13, fontWeight: 600, color: GOLD, letterSpacing: '0.35em' }}>
           ✦ JKR FARMS &amp; RESORTS ✦
         </div>
