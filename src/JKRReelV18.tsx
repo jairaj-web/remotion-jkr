@@ -234,26 +234,32 @@ const ShotV18: React.FC<{ shot: typeof SHOTS_V18[0]; sectionIdx: number }> = ({ 
         </div>
       </SlideUp>
 
-      {/* Main text */}
-      <div style={{ position: 'absolute', bottom: 160, left: 36, right: 36 }}>
+      {/* Centre overlay for text readability */}
+      <div style={{ position: 'absolute', top: '30%', left: 0, right: 0, bottom: '30%', background: 'linear-gradient(to bottom, transparent 0%, rgba(10,31,14,0.70) 30%, rgba(10,31,14,0.75) 70%, transparent 100%)' }} />
+
+      {/* Main text — vertically centred */}
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '0 36px', textAlign: 'center' }}>
         <GoldLine delay={8} width={30} />
         <div style={{ marginTop: 16 }}>
           <SlideUp delay={8}>
-            <div style={{ fontFamily: cormorant.fontFamily, fontSize: 72, fontWeight: 700, color: IVORY, lineHeight: 1.05, textShadow: '0 4px 32px rgba(0,0,0,0.9)', letterSpacing: '0.02em' }}>
+            <div style={{ fontFamily: cormorant.fontFamily, fontSize: 76, fontWeight: 700, color: IVORY, lineHeight: 1.05, textShadow: '0 4px 40px rgba(0,0,0,0.95)', letterSpacing: '0.02em' }}>
               {shot.line1}
             </div>
           </SlideUp>
           <SlideUp delay={14}>
-            <div style={{ fontFamily: cormorant.fontFamily, fontSize: 72, fontWeight: 400, color: GOLD, lineHeight: 1.05, textShadow: '0 4px 32px rgba(0,0,0,0.9)', letterSpacing: '0.02em' }}>
+            <div style={{ fontFamily: cormorant.fontFamily, fontSize: 76, fontWeight: 400, color: GOLD, lineHeight: 1.05, textShadow: '0 4px 40px rgba(0,0,0,0.95)', letterSpacing: '0.02em' }}>
               {shot.line2}
             </div>
           </SlideUp>
         </div>
         <SlideUp delay={20}>
-          <div style={{ fontFamily: montserrat.fontFamily, fontSize: 16, fontWeight: 300, color: `${IVORY}CC`, letterSpacing: '0.2em', marginTop: 12 }}>
+          <div style={{ fontFamily: montserrat.fontFamily, fontSize: 15, fontWeight: 300, color: `${IVORY}BB`, letterSpacing: '0.22em', marginTop: 16 }}>
             JKR FARMS &amp; RESORTS
           </div>
         </SlideUp>
+        <div style={{ marginTop: 12 }}>
+          <GoldLine delay={22} width={25} />
+        </div>
       </div>
     </AbsoluteFill>
   );
@@ -438,7 +444,7 @@ const CTAV18: React.FC<{ shot: typeof SHOTS_V18[0] }> = ({ shot }) => {
 
         <div style={{ transform: `translateY(${ty(p4)}px)`, opacity: op(p4), textAlign: 'center', marginTop: 28 }}>
           <div style={{ fontFamily: montserrat.fontFamily, fontSize: 28, fontWeight: 700, color: GOLD, letterSpacing: '0.06em', textShadow: `0 0 20px ${GOLD}88` }}>
-            📞 +91 98765 43210
+            📞 73385 01337
           </div>
           <div style={{ fontFamily: montserrat.fontFamily, fontSize: 14, fontWeight: 300, color: `${IVORY}88`, letterSpacing: '0.15em', marginTop: 8 }}>
             jkrfarmsandresorts.com
