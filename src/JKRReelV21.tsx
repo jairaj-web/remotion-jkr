@@ -111,7 +111,7 @@ const KB: React.FC<{ src: string; totalFrames: number; startScale?: number }> = 
 
 // ── Gradient overlay ──────────────────────────────────────────────────────────
 const Overlay: React.FC = () => (
-  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(19,2,8,0.15) 0%, rgba(19,2,8,0.28) 35%, rgba(19,2,8,0.82) 65%, rgba(19,2,8,0.97) 100%)' }} />
+  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(19,2,8,0.04) 0%, rgba(19,2,8,0.08) 35%, rgba(19,2,8,0.50) 62%, rgba(19,2,8,0.72) 100%)' }} />
 );
 
 // ── JKR Logo ──────────────────────────────────────────────────────────────────
@@ -183,7 +183,7 @@ const HookV21: React.FC<{ shot: typeof SHOTS_V21[0] }> = ({ shot }) => {
   return (
     <AbsoluteFill style={{ background: WINE }}>
       <CircleReveal src={shot.img!} totalFrames={shot.frames} />
-      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(19,2,8,0.55) 0%, rgba(19,2,8,0.20) 40%, rgba(19,2,8,0.82) 100%)' }} />
+      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(19,2,8,0.25) 0%, rgba(19,2,8,0.08) 40%, rgba(19,2,8,0.55) 100%)' }} />
       <SpotLight delay={32} />
       <Progress total={7} cur={0} />
       <Logo size={115} delay={34} top={54} />
@@ -230,7 +230,7 @@ const ShotV21: React.FC<{ shot: typeof SHOTS_V21[0]; idx: number }> = ({ shot, i
 
     {/* Centre text block */}
     <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start', padding: '0 36px' }}>
-      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 28%, rgba(19,2,8,0.72) 46%, rgba(19,2,8,0.78) 54%, transparent 72%)' }} />
+      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 28%, rgba(19,2,8,0.48) 44%, rgba(19,2,8,0.52) 56%, transparent 72%)' }} />
       <div style={{ position: 'relative', zIndex: 5 }}>
         <GoldRule delay={6} width={28} />
         <div style={{ marginTop: 16 }}>
@@ -261,7 +261,7 @@ const CounterV21: React.FC<{ shot: typeof SHOTS_V21[0] }> = ({ shot }) => {
   return (
     <AbsoluteFill style={{ background: WINE }}>
       <KB src={shot.img!} totalFrames={shot.frames} startScale={1.06} />
-      <div style={{ position: 'absolute', inset: 0, background: 'rgba(19,2,8,0.87)' }} />
+      <div style={{ position: 'absolute', inset: 0, background: 'rgba(19,2,8,0.65)' }} />
       <SpotLight delay={4} />
       <Progress total={7} cur={5} />
       <Logo size={90} delay={4} top={54} />
@@ -385,8 +385,8 @@ const CTAV21: React.FC<{ shot: typeof SHOTS_V21[0] }> = ({ shot }) => {
   return (
     <AbsoluteFill style={{ background: WINE }}>
       <KB src={shot.img!} totalFrames={shot.frames} startScale={1.05} />
-      <div style={{ position: 'absolute', inset: 0, background: `rgba(19,2,8,0.80)`, opacity: fadeIn }} />
-      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(19,2,8,0.50) 0%, transparent 30%, rgba(19,2,8,0.94) 75%, rgba(19,2,8,1) 100%)' }} />
+      <div style={{ position: 'absolute', inset: 0, background: `rgba(19,2,8,0.55)`, opacity: fadeIn }} />
+      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(19,2,8,0.25) 0%, transparent 30%, rgba(19,2,8,0.80) 72%, rgba(19,2,8,0.95) 100%)' }} />
       <SpotLight delay={10} />
       <Logo size={128} delay={8} top={60} />
 
